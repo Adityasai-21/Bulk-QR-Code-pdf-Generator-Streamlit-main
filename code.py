@@ -6,7 +6,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Image as PlatypusImage, PageBreak, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate, Spacer
-from reportlab.lib.units import inch, cm
+from reportlab.lib.units import cm
 from reportlab.platypus.frames import Frame
 import os
 import tempfile
@@ -74,7 +74,7 @@ if st.button("Generate QR Codes and Export to PDF"):
                 self.allowSplitting = 0
                 BaseDocTemplate.__init__(self, filename, **kw)
 
-        doc = MyDocTemplate(pdf_file_name, pagesize=letter)
+        doc = MyDocTemplate(pdf_file_name, pagesize=letter, leftMargin=0, rightMargin=0)  # Set margins to 0
 
         styles = getSampleStyleSheet()
         text_style = styles["Normal"]
