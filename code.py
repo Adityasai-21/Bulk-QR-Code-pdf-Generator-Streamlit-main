@@ -116,7 +116,6 @@ if st.button("Generate QR Codes and Export to PDF"):
 
         # Provide a download link for the generated PDF
         st.success("QR Codes generated successfully! You can download the PDF below:")
-        st.markdown(f'<a href="{pdf_file_name}" download="{pdf_file_name}">Download QR Codes PDF</a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{pdf_file_name}" download>Download QR Codes PDF</a>', unsafe_allow_html=True)
     else:
         st.error("Please enter content for the QR codes.")
-
