@@ -9,6 +9,7 @@ from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate, Spacer
 from reportlab.lib.units import inch, cm
 from reportlab.platypus.frames import Frame
 import os
+import tempfile
 
 # Function to generate QR code from text
 def generate_qr_code_with_text(text):
@@ -54,15 +55,18 @@ qr_size = st.slider("Select QR code size", min_value=100, max_value=400, value=2
 # Checkbox to show/hide text in PDF
 show_text = st.checkbox("Show text above QR code")
 
-# Specify the directory where you want to save the PDF file
-save_directory = "C:/Users/adity/Downloads"  # Replace with the actual directory path
+# Initialize the file path for the PDF
+pdf_file_name = ""
 
 if st.button("Generate QR Codes and Export to PDF"):
     if content:
         contents = content.split("\n")
 
-        # Create the full path for the PDF file
-        pdf_file_name = os.path.join(save_directory, "qrcodes.pdf")
+        # Create a temporary directory to store the PDF
+        temp_dir = tempfile.mkdtemp()
+
+        # Create the full path for the PDF file in the temporary directory
+        pdf_file_name = os.path.join(temp_dir, "qrcodes.pdf")
 
         # Create a PDF document
         class MyDocTemplate(BaseDocTemplate):
@@ -115,7 +119,7 @@ if st.button("Generate QR Codes and Export to PDF"):
         doc.build(qr_code_images)
 
         # Provide a download link for the generated PDF
-        st.success("QR Codes generated successfully! You can download the PDF below:")
-        st.markdown(f'<a href="{pdf_file_name}" download>Download QR Codes PDF</a>', unsafe_allow_html=True)
-    else:
-        st.error("Please enter content for the QR codes.")
+        st.success("QR Codes and Text generated successfully! You can download the PDF below:")
+        with open(pdf_file_name, "rb") as pdf_file:
+            pdf_bytes = pdf_file.read()
+        st.download_button("Download QR Codes and Text PDF", pdf_bytes, key="pdf_download", file_name="qrcodes.pdf")
