@@ -7,7 +7,8 @@ from reportlab.platypus import SimpleDocTemplate, Image as PlatypusImage, PageBr
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate, Spacer
 from reportlab.lib.units import inch, cm
-from reportlab.platypus.frames import Frame  # Add this import statement
+from reportlab.platypus.frames import Frame
+import os
 
 # Function to generate QR code from text
 def generate_qr_code_with_text(text):
@@ -53,13 +54,17 @@ qr_size = st.slider("Select QR code size", min_value=100, max_value=400, value=2
 # Checkbox to show/hide text in PDF
 show_text = st.checkbox("Show text above QR code")
 
+# Specify the directory where you want to save the PDF file
+save_directory = "C:/Users/adity/Downloads"  # Replace with the actual directory path
+
 if st.button("Generate QR Codes and Export to PDF"):
     if content:
         contents = content.split("\n")
 
-        # Create a PDF document
-        pdf_file_name = "qrcodes.pdf"
+        # Create the full path for the PDF file
+        pdf_file_name = os.path.join(save_directory, "qrcodes.pdf")
 
+        # Create a PDF document
         class MyDocTemplate(BaseDocTemplate):
             def __init__(self, filename, **kw):
                 self.allowSplitting = 0
